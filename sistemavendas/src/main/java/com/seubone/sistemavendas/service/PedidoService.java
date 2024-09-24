@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
-import com.seubone.sistemavendas.enums.SolicitacaoStatus;
+// import com.seubone.sistemavendas.enums.SolicitacaoStatus;
 import com.seubone.sistemavendas.model.Item;
 import com.seubone.sistemavendas.model.Pedido;
 import com.seubone.sistemavendas.repository.PedidoRepository;
@@ -22,7 +22,6 @@ public class PedidoService {
 
     public Pedido create(PedidoRequestDTO dto){
         Pedido pedido = Pedido.builder()
-        .status(SolicitacaoStatus.PENDENTE)
         .formaPagamento(dto.formaPagamento())
         .valorFrete(dto.valorFrete())
         .prazo(dto.prazo())
@@ -36,7 +35,8 @@ public class PedidoService {
         .toList();
 
         pedido.setItens(itens);
-        pedido.setSoma(pedido.calculaSoma());
+        pedido.calculaSoma();
+        pedido.calculaStatus();
         repository.save(pedido);
         return pedido;
     }

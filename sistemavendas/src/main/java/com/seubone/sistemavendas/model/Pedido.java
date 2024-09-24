@@ -76,15 +76,9 @@ public class Pedido {
     }
 
 
-    public double calculaSoma(){
+    public Double calculaSoma(){
         soma = 0.0;
-        if(formaPagamento == FormaPagamento.CARTAO_CREDITO){
-            soma += this.itens.stream().map(Item::getSomaCheio).reduce(0.0, Double::sum);
-        }
-        else{
-            soma += this.itens.stream().map(Item::getSomaDescontado).reduce(0.0, Double::sum);
-        }
-
+        soma = calculaSomaProdutos();
         if(prazo == Prazo.TURBO){
             soma *= 1.1;
         }
@@ -95,8 +89,40 @@ public class Pedido {
 
         soma -= desconto;
 
+        this.setSoma(soma);
         return soma;
     }
 
+    public void calculaStatus(){
+        Double descontoProdutosPorPrazo = 0.0;
+        if(this.prazo == Prazo.PADRAO){
+            descontoProdutosPorPrazo = calculaSomaProdutos() * 0.05;
+        }
+        else if(this.prazo == Prazo.TURBO){
+            descontoProdutosPorPrazo = calculaSomaProdutos() * 0.1;
+        }
+        else if(this.prazo == Prazo.SUPER_TURBO){
+            descontoProdutosPorPrazo = calculaSomaProdutos() * 0.2;
+        }
 
+        Double descontoMaximoPermitido = Double.max(this.valorFrete, descontoProdutosPorPrazo);
+        if(this.desconto <= descontoMaximoPermitido){
+            this.status = SolicitacaoStatus.APROVADO;
+        }
+        else{
+            this.status = SolicitacaoStatus.PENDENTE;
+        }
+    }
+
+
+    public double calculaSomaProdutos(){
+        double soma = 0.0;
+        if(formaPagamento == FormaPagamento.CARTAO_CREDITO){
+            soma += this.itens.stream().map(Item::getSomaCheio).reduce(0.0, Double::sum);
+        }
+        else{
+            soma += this.itens.stream().map(Item::getSomaDescontado).reduce(0.0, Double::sum);
+        }
+        return soma;
+    }
 }

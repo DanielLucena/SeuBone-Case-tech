@@ -1,6 +1,7 @@
 package com.seubone.sistemavendas.model;
 
 import com.seubone.sistemavendas.dto.ProdutoRequestDTO;
+import com.seubone.sistemavendas.dto.ProdutoResponseDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,5 +34,15 @@ public class Produto {
         this.descricao = data.produto();
         this.precoCheio = data.preco_cheio();
         this.precoDescontado = data.preco_descontado();
+    }
+
+    public ProdutoResponseDTO toResponse(){
+        return new ProdutoResponseDTO(
+            this.id,
+            this.sku,
+            this.descricao,
+            this.precoCheio,
+            this.precoDescontado
+        );
     }
 }

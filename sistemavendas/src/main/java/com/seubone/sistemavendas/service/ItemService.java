@@ -24,5 +24,9 @@ public class ItemService {
         return item;
     }
 
+    public Item save(Item item){
+        return itemRepository.save(item);
+    }
+
 
 }

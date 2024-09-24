@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
 import com.seubone.sistemavendas.enums.SolicitacaoStatus;
+import com.seubone.sistemavendas.model.Item;
 import com.seubone.sistemavendas.model.Pedido;
 import com.seubone.sistemavendas.repository.PedidoRepository;
 
@@ -27,10 +28,16 @@ public class PedidoService {
         .prazo(dto.prazo())
         .desconto(dto.desconto())
         .build();
-        repository.save(pedido);
-        pedido.setItens(dto.itens().stream().map(itemService::dtoToItem).toList());
+
+        //persiste itens ante de adicionar ao pedido
+        List<Item> itens = dto.itens().stream()
+        .map(itemService::dtoToItem)
+        .map(item -> itemService.save(item)) // Salvar item no banco de dados
+        .toList();
+
+        pedido.setItens(itens);
         pedido.setSoma(pedido.calculaSoma());
-        
+        repository.save(pedido);
         return pedido;
     }
 

@@ -3,9 +3,9 @@ package com.seubone.sistemavendas.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.seubone.sistemavendas.model.Usuario;
+import com.seubone.sistemavendas.model.User;
 
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     UserDetails findByLogin(String login);
 }

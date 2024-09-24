@@ -19,13 +19,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "usuario")
+@Table(name = "users")
+@Entity(name = "users")
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Usuario implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +36,12 @@ public class Usuario implements UserDetails {
     private String senha;
 
     private UserRole role;
+
+    public User(String login, String senha, UserRole role) {
+        this.login = login;
+        this.senha = senha;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

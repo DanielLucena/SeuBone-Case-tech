@@ -5,12 +5,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.seubone.sistemavendas.repository.UsuarioRepository;
+import com.seubone.sistemavendas.repository.UserRepository;
+
 
 public class AuthorizationService implements UserDetailsService {
 
     @Autowired
-    UsuarioRepository repository;
+    UserRepository repository;
 
 
     @Override

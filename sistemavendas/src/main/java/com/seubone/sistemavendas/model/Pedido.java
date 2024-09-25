@@ -59,11 +59,11 @@ public class Pedido {
     public PedidoResponseDTO toResponse(){
         return new PedidoResponseDTO(
             this.id,
-            Double.parseDouble(String.format("%.2f", this.soma)),
-            Double.parseDouble(String.format("%.2f", this.valorFrete)),
+            Double.parseDouble(String.format(java.util.Locale.US, "%.2f", this.soma)),
+            Double.parseDouble(String.format(java.util.Locale.US, "%.2f", this.valorFrete)),
             this.prazo,
             this.items.stream().map(Item::toResponse).toList(),
-            Double.parseDouble(String.format("%.2f", this.desconto)),
+            Double.parseDouble(String.format(java.util.Locale.US, "%.2f", this.desconto)),
             this.formaPagamento,
             this.status
         );

@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
-// import com.seubone.sistemavendas.enums.SolicitacaoStatus;
+import com.seubone.sistemavendas.enums.SolicitacaoStatus;
+import com.seubone.sistemavendas.exception.ResourceNotFoundException;
 import com.seubone.sistemavendas.model.Item;
-// import com.seubone.sistemavendas.enums.SolicitacaoStatus;
 import com.seubone.sistemavendas.model.Pedido;
 import com.seubone.sistemavendas.repository.PedidoRepository;
 
@@ -46,7 +46,14 @@ public Pedido create(PedidoRequestDTO dto){
     }
 
     public List<Pedido> findAll(){
-        return repository.findAll();
+        return repository.findAllByOrderByIdAsc();
+    }
+
+    public Pedido revisar(Long id, SolicitacaoStatus status) {
+        Pedido pedido = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+        pedido.setStatus(status);
+        repository.save(pedido);
+        return pedido;
     }
 
     

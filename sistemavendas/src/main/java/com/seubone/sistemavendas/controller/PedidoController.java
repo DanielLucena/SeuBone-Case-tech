@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
 import com.seubone.sistemavendas.dto.PedidoResponseDTO;
+import com.seubone.sistemavendas.dto.RevisaoDTO;
 import com.seubone.sistemavendas.model.Pedido;
 import com.seubone.sistemavendas.service.PedidoService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("pedido")
@@ -40,5 +44,11 @@ public class PedidoController {
         return ResponseEntity.ok(
             pedidos.stream().map(Pedido::toResponse).toList()
         );
+    }
+
+    @PutMapping("revisar/{id}")
+    public ResponseEntity<PedidoResponseDTO> revisarPedido(@PathVariable Long id, @RequestBody RevisaoDTO data) {
+        Pedido pedido = service.revisar(id, data.status());
+        return ResponseEntity.ok(pedido.toResponse());
     }
 }

@@ -1,6 +1,5 @@
 package com.seubone.sistemavendas.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.seubone.sistemavendas.dto.ItemResponseDTO;
 
 import jakarta.persistence.Entity;
@@ -16,12 +15,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "item")
 @Table(name = "item")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 @Builder
 public class Item {
 
@@ -30,15 +29,13 @@ public class Item {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "produto_id", nullable = false)
-    @JsonIgnore
+    @JoinColumn(name = "produto_id")
     private Produto produto;
 
 
-    // @ManyToOne
-    // @JoinColumn(name = "pedido_id", nullable = false)
-    // @JsonIgnore
-    // private Pedido pedido;
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", nullable = false)
+    private Pedido pedido;
 
     
     private Integer quantidade;

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
 import com.seubone.sistemavendas.dto.PedidoResponseDTO;
 import com.seubone.sistemavendas.model.Pedido;
-import com.seubone.sistemavendas.service.ItemService;
 import com.seubone.sistemavendas.service.PedidoService;
 
 import jakarta.validation.Valid;
@@ -25,8 +24,6 @@ public class PedidoController {
     @Autowired
     PedidoService service;
 
-    @Autowired
-    ItemService itemService;
 
     @PostMapping
     public ResponseEntity<PedidoResponseDTO> postPedido(@RequestBody @Valid PedidoRequestDTO body){

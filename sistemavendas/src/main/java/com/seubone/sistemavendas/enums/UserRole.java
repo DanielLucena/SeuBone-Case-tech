@@ -1,8 +1,8 @@
 package com.seubone.sistemavendas.enums;
 
 public enum UserRole {
-    GERENTE("gerente"),
-    VENDEDOR("vendedor");
+    ADMIN("admin"),
+    USER("user");
 
     private String role;
 

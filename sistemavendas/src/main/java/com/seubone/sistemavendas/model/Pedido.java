@@ -69,6 +69,7 @@ public class Pedido {
         );
     }
 
+
     public void setItems(Set<Item> items) {
         this.items = items;
         for (Item item : items) {
@@ -98,6 +99,7 @@ public class Pedido {
         this.setSoma(soma);
         return soma;
     }
+
 
     public SolicitacaoStatus calculaStatusInicial(){
         Double descontoProdutosPorPrazo = 0.0;
@@ -131,7 +133,7 @@ public class Pedido {
     }
 
 
-    public double calculaSomaProdutos(){
+   public double calculaSomaProdutos(){
         double soma = 0.0;
         if(formaPagamento == FormaPagamento.CARTAO_CREDITO){
             soma += this.items.stream().map(Item::getSomaCheio).reduce(0.0, Double::sum);
@@ -142,5 +144,4 @@ public class Pedido {
         System.out.println("Soma: " + soma);
         return soma;
     }
-
 }

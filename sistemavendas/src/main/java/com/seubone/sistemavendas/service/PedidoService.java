@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
-import com.seubone.sistemavendas.enums.SolicitacaoStatus;
+// import com.seubone.sistemavendas.enums.SolicitacaoStatus;
 import com.seubone.sistemavendas.model.Item;
 // import com.seubone.sistemavendas.enums.SolicitacaoStatus;
 import com.seubone.sistemavendas.model.Pedido;
@@ -22,7 +22,7 @@ public class PedidoService {
     @Autowired
     ItemService itemService;
 
-    public Pedido create(PedidoRequestDTO dto){
+public Pedido create(PedidoRequestDTO dto){
         Pedido pedido = Pedido.builder()
         .formaPagamento(dto.formaPagamento())
         .valorFrete(dto.valorFrete())

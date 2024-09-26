@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.seubone.sistemavendas.dto.PedidoFiltroDTO;
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
 import com.seubone.sistemavendas.dto.PedidoResponseDTO;
 import com.seubone.sistemavendas.dto.RevisaoDTO;
@@ -46,10 +47,10 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PedidoResponseDTO>> getPedidos(){
+    public ResponseEntity<List<PedidoResponseDTO>> getPedidos(PedidoFiltroDTO filtro) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                         .getPrincipal();
-        List<Pedido> pedidos = service.findAll(userDetails);
+        List<Pedido> pedidos = service.findAll(userDetails, filtro);
 
 
         return ResponseEntity.ok(

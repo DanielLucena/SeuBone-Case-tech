@@ -4,14 +4,18 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.seubone.sistemavendas.dto.PedidoFiltroDTO;
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
 import com.seubone.sistemavendas.enums.SolicitacaoStatus;
 import com.seubone.sistemavendas.exception.ResourceNotFoundException;
 import com.seubone.sistemavendas.model.Item;
 import com.seubone.sistemavendas.model.Pedido;
+import com.seubone.sistemavendas.model.Produto;
 import com.seubone.sistemavendas.repository.PedidoRepository;
 import com.seubone.sistemavendas.repository.UserRepository;
 
@@ -53,12 +57,33 @@ public class PedidoService {
         return pedido;
     }
 
-    public List<Pedido> findAll(UserDetails userDetails){
+    public List<Pedido> findAll(UserDetails userDetails, PedidoFiltroDTO filtro) {
         if(userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
-            return repository.findAllByOrderByIdAsc();
+            Pedido pedidoFiltro = Pedido.builder()
+            .status(filtro.status())
+            .formaPagamento(filtro.formaPagamento())
+            .prazo(filtro.prazo())
+            .username(filtro.vendedor())
+            .valorFrete(filtro.valorFrete())
+            .desconto(filtro.desconto())
+            .soma(filtro.soma())
+            .build();
+
+        ExampleMatcher matcher = ExampleMatcher
+            .matching()
+            .withIgnorePaths("valorFrete", "desconto", "soma", "id")
+            .withIgnoreCase()
+            .withStringMatcher(ExampleMatcher.StringMatcher.EXACT);
+        Example<Pedido> example = Example.of(pedidoFiltro, matcher);
+        List<Pedido> pedidosFiltrados = repository.findAll(example);
+        return pedidosFiltrados.stream()
+            .toList();
+            // List<Pedido> pedidos = repository.findAllByOrderByIdAsc();
         }
         return repository.findByUsernameOrderByIdAsc(userDetails.getUsername());
         // return repository.findAllByOrderByIdAsc();
+
+        
     }
 
     public Pedido revisar(Long id, SolicitacaoStatus status) {

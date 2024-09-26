@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import com.seubone.sistemavendas.service.ProdutoService;
 import jakarta.validation.Valid;
 
 @RestController
+// @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("produto")
 public class ProdutoController {
 
@@ -39,4 +41,10 @@ public class ProdutoController {
         
         return ResponseEntity.ok(produtos.stream().map(Produto::toResponse).toList());
     }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<List<Produto>> bulkRegistry(@RequestBody @Valid List<ProdutoRequestDTO> body) {
+        return ResponseEntity.ok(service.bulkRegistry(body));
+    }
+    
 }

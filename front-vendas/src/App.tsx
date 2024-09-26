@@ -1,33 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react';
 import './App.css'
+import ProdutosPage from './pages/ProdutosPage'
+import NavBar from './components/NavBar';
+import { LoginForm } from './pages/LoginForm';
+import PedidoForm from './pages/PedidoForm';
+import PedidosPage from './pages/PedidosPage';
+import PedidoDetalhes from './pages/PedidoDetalhes';
+// import { YouTubeForm } from './pages/YouTubeForm'
 
+export type DetailsProps = {
+  id: number
+}
+
+export type PageProps = {
+  onDetails : (details: DetailsProps) => void;
+}
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
+  const [componentToShow, setComponentToShow] = useState<string>("produto");
+
+  const [detailsToShow ,setDetailsToShow] = useState<DetailsProps | null>();
+
+  useEffect(() => setComponentToShow('details'), [detailsToShow]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='min-h-screen bg-slate-700'>
+    <NavBar
+          onNavigate={setComponentToShow}
+          // isLoggedIn={isLoggedIn}
+        />
+      <div className=" flex flex-col gap-4 items-center px-6 py-4">
+        
+        {componentToShow === "login" && <LoginForm/>}
+
+        {componentToShow === "produtos" && <ProdutosPage/>}
+        {componentToShow === "pedidoForm" && <PedidoForm/>}
+        {componentToShow === "pedidos" && <PedidosPage
+        onDetails={setDetailsToShow}/>}
+        {componentToShow === "details" && <PedidoDetalhes
+        id={detailsToShow?.id}/>}
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    </div>
+    {/* <ProdutosPage/> */}
     </>
   )
 }

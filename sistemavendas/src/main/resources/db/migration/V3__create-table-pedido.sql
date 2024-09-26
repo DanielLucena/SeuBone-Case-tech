@@ -5,5 +5,10 @@ CREATE TABLE pedido (
 	prazo int2 NULL,
 	soma DECIMAL(10,2) NULL,
 	status int2 NULL,
-	valor_frete DECIMAL(10,2) NULL
+	valor_frete DECIMAL(10,2) NULL,
+	username TEXT NOT NULL
 );
+
+-- ALTER TABLE pedido
+-- ADD CONSTRAINT PEDIDO_USERS_ID_FK
+-- FOREIGN KEY (users_id) REFERENCES users;

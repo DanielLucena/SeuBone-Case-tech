@@ -10,4 +10,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
 
     List<Pedido> findAllByOrderByIdAsc();
 
+    List<Pedido> findByUsernameOrderByIdAsc(String username);
+
 }

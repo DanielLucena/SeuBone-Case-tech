@@ -32,4 +32,6 @@ public class PedidoResponseDTO{
 
     SolicitacaoStatus status;
 
+    String vendedor;
+
 }

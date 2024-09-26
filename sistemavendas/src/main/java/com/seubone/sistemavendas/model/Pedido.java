@@ -1,6 +1,9 @@
 package com.seubone.sistemavendas.model;
 
 import java.util.Set;
+import java.util.List;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.seubone.sistemavendas.dto.PedidoResponseDTO;
 import com.seubone.sistemavendas.enums.FormaPagamento;
@@ -14,6 +17,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -45,7 +50,7 @@ public class Pedido {
     private Prazo prazo;
 
     @OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL, orphanRemoval = true)  
-    private Set<Item> items; 
+    private List<Item> items; 
 
     // @Currency("BRL")
     private Double desconto;
@@ -56,6 +61,8 @@ public class Pedido {
     @Enumerated(EnumType.ORDINAL)
     private SolicitacaoStatus status;
 
+    private String username;
+
     public PedidoResponseDTO toResponse(){
         return new PedidoResponseDTO(
             this.id,
@@ -65,16 +72,18 @@ public class Pedido {
             this.items.stream().map(Item::toResponse).toList(),
             Double.parseDouble(String.format(java.util.Locale.US, "%.2f", this.desconto)),
             this.formaPagamento,
-            this.status
+            this.status,
+            this.username
         );
     }
 
 
-    public void setItems(Set<Item> items) {
-        this.items = items;
+    public void setItems(List<Item> items) {
+        System.out.println("items:" + items.size());
         for (Item item : items) {
             item.setPedido(this);  // Garantindo que cada item tenha a referência ao pai
         }
+        this.items = items;
     }
 
     public void addItem(Item item) {

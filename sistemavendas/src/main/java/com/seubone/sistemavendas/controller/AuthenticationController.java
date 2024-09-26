@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.seubone.sistemavendas.security.TokenService;
 import jakarta.validation.Valid;
 
 @RestController
+// @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("auth")
 public class AuthenticationController {
 
@@ -38,8 +40,8 @@ public class AuthenticationController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
-
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        System.out.println("User: " + ((User)auth.getPrincipal()).getUsername());
+        return ResponseEntity.ok(new LoginResponseDTO(token, ((User)auth.getPrincipal()).getUsername()));
     }
 
     @PostMapping("/register")

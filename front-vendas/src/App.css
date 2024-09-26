@@ -5,38 +5,96 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+label {
+  font-weight: bold;
+  display: flex;
+  margin-bottom: 5px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select {
+  display: block;
+  width: 400px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.error {
+  color: red;
+  font-size: 15px;
+  text-align: left;
 }
 
-.card {
-  padding: 2em;
+.form-control {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.form-control div input, 
+.form-control div  select {
+  width: 150px;
 }
 
-.read-the-docs {
-  color: #888;
+.custom-table {
+  /* background-color: white; bg-white */
+  border-collapse: collapse; /* divide-y */
 }
+
+.custom-table > * + * {
+  border-top: 1px solid #E5E7EB; /* divide-gray-200 */
+}
+
+thead {
+
+  /* background-color: #E5E7EB; bg-gray-200 */
+
+}
+
+thead tr {
+  padding-left: 1.5rem;    /* px-6 (6 * 0.25rem) */
+  padding-right: 1.5rem;   /* px-6 */
+  padding-top: 0.75rem;    /* py-3 (3 * 0.25rem) */
+  padding-bottom: 0.75rem; /* py-3 */
+  text-align: center;        /* text-left */
+  font-size: 0.75rem;      /* text-xs (12px) */
+  font-weight: 500;        /* font-medium */
+  color: #6B7280;          /* text-gray-500 */
+  text-transform: uppercase; /* uppercase */
+  letter-spacing: 0.05em;  /* tracking-wider */
+  justify-content: space-between;
+}
+
+tbody {
+  /* background-color: white; bg-white */
+  border-collapse: collapse; /* divide-y */
+}
+
+tbody > * + * {
+  border-top: 1px solid #E5E7EB; /* divide-gray-200 */
+}
+
+tbody tr {
+  padding-left: 1.5rem;   /* px-6 (6 * 0.25rem) */
+  padding-right: 1.5rem;  /* px-6 */
+  padding-top: 1rem;      /* py-4 (4 * 0.25rem) */
+  padding-bottom: 1rem;   /* py-4 */
+  font-size: 0.875rem;    /* text-sm (14px) */
+  font-weight: 500;       /* font-medium */
+  /* color: #111827;         text-gray-900 */
+  white-space: nowrap;    /* whitespace-nowrap */
+}
+
+/* form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+} */

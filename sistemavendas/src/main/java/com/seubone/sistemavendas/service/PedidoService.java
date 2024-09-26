@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.seubone.sistemavendas.dto.PedidoRequestDTO;
@@ -12,6 +13,7 @@ import com.seubone.sistemavendas.exception.ResourceNotFoundException;
 import com.seubone.sistemavendas.model.Item;
 import com.seubone.sistemavendas.model.Pedido;
 import com.seubone.sistemavendas.repository.PedidoRepository;
+import com.seubone.sistemavendas.repository.UserRepository;
 
 @Service
 public class PedidoService {
@@ -22,12 +24,17 @@ public class PedidoService {
     @Autowired
     ItemService itemService;
 
-public Pedido create(PedidoRequestDTO dto){
+    @Autowired
+    UserRepository userRepository;
+
+    public Pedido create(PedidoRequestDTO dto, String username) {
         Pedido pedido = Pedido.builder()
+
         .formaPagamento(dto.formaPagamento())
         .valorFrete(dto.valorFrete())
         .prazo(dto.prazo())
         .desconto(dto.desconto())
+        .username(username)
         .build();
 
 
@@ -36,8 +43,9 @@ public Pedido create(PedidoRequestDTO dto){
         .map(item -> itemService.dtoToItem(item)) // Converte DTO para Item
         // .map(item -> itemService.save(item)) // Salvar item no banco de dados
         .toList();
+        System.out.println("itens apost dto transformado: " + itens.size());
 
-        pedido.setItems(new HashSet<Item>(itens));
+        pedido.setItems(itens);
         pedido.calculaSoma();
         pedido.calculaStatusInicial();
         
@@ -45,8 +53,12 @@ public Pedido create(PedidoRequestDTO dto){
         return pedido;
     }
 
-    public List<Pedido> findAll(){
-        return repository.findAllByOrderByIdAsc();
+    public List<Pedido> findAll(UserDetails userDetails){
+        if(userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))){
+            return repository.findAllByOrderByIdAsc();
+        }
+        return repository.findByUsernameOrderByIdAsc(userDetails.getUsername());
+        // return repository.findAllByOrderByIdAsc();
     }
 
     public Pedido revisar(Long id, SolicitacaoStatus status) {
@@ -54,6 +66,10 @@ public Pedido create(PedidoRequestDTO dto){
         pedido.setStatus(status);
         repository.save(pedido);
         return pedido;
+    }
+
+    public Pedido findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
     }
 
     
